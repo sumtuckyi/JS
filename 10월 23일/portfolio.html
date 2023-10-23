@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="style.css">
+  <title>나의 포트폴리오</title>
+</head>
+<body>
+  <h1>안녕하세요, 제 이름은 <b id="name">홍길동</b>입니다.</h1>
+  
+  <img src="profile.png" alt="profile" width="200">
+  
+  <h2>소개</h2>
+  
+  <p>저는 <b id="job">[직업/전공]</b>으로 일하고 있습니다. <b id="experience">[간단한 경력/학력]</b>을 가지고 있으며, <b>[특기 또는 관심 분야]</b>에 대해 꾸준히 공부하고 있습니다.</p>
+  
+  <h2>프로젝트</h2>
+ 
+  <ul id="list-group">
+    <li><b>프로젝트 1:</b> <span class="project-1">[프로젝트 1 제목]</span></li>
+    <li><b>프로젝트 2:</b> <span class="project-2">[프로젝트 2 제목]</span></li>
+    <li><b>프로젝트 3:</b> <span class="project-3">[프로젝트 3 제목]</span></li>
+  </ul>
+  
+  <h2>연락처</h2>
+  <p>이메일: <b id="email">[이메일 주소]</b></p>
+  <p>전화번호: <b id="phone">[전화번호]</b></p>
+  
+  <script>
+    const name = document.querySelector('#name')
+    const job = document.querySelector('#job')
+    const experience = document.querySelector('#experience') 
+    const interest = document.querySelector('body > p:nth-child(4) > b:nth-child(3)')
+    const email = document.querySelector('#email')
+    const phone = document.querySelector('#phone')
+    const projects = document.querySelectorAll('#list-group > li > span')
+    const h1_tag = document.querySelector('h1')
+    const image = document.querySelector('img')
+    const sns = document.createElement('p')
+    const sns_content = document.createElement('b')
+    
+    name.textContent = '망그러진 곰'
+    experience.textContent = '세계 각국을 여행한 경험'
+    job.textContent = '프로그래머'
+    interest.textContent = '사진'
+    email.textContent = 'gomi@gmail.com'
+    phone.textContent = '010-1000-0001'
+    for (i = 0; i < projects.length; i++) {
+      projects[i].textContent = `project ${i+1}`
+    }
+    sns.textContent = 'SNS : '
+    sns_content.setAttribute('id', 'sns')
+    sns_content.textContent = '@gomgom'
+    sns_content.classList.add('highlight')
+    
+    document.body.classList.add('container')
+    h1_tag.classList.add('title')
+    image.classList.add('image')
+    name.classList.add('highlight')
+    experience.classList.add('highlight')
+    job.classList.add('highlight')
+    interest.classList.add('highlight')
+    email.classList.add('highlight')
+    phone.classList.add('highlight')
+
+    document.body.appendChild(sns)
+    sns.appendChild(sns_content)
+  </script>
+</body>
+</html>

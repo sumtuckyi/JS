@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .container {
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+      padding: 1rem;
+    }
+    .done {
+      text-decoration: line-through;
+    }
+    .btn {
+        background-color: rgba(51, 51, 51, 0.05);
+        border-radius: 8px;
+        border-width: 0;
+        color: #333333;
+        cursor: pointer;
+        display: inline-block;
+        font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 10px;
+        list-style: none;
+        margin: 0;
+        padding: 10px 12px;
+        text-align: center;
+        transition: all 200ms;
+        vertical-align: baseline;
+        white-space: nowrap;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        margin: 5px;
+    }
+
+  </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Todo List</h1>
+        <form action="/todos/">
+            <input type="text">
+            <button>Todo</button>
+          </form>
+          <ul></ul>
+    </div>
+  
+<script>
+  const form = document.querySelector('form')
+  const input = form.querySelector('input')
+  
+  function addTodo (event) {
+    // 이벤트를 취소한다.
+    event.preventDefault()
+    // 입력 element를 찾고 해당 입력 element의 value 값을 저장한다.
+    const input_text = input.value
+    input.value = ''
+    if (input_text.trim()) {
+    // li element를 생성 후 input element의 value 값을 데이터로 저장한다
+        const li_tag = document.createElement('li')
+        li_tag.textContent = input_text
+        
+        // ul 태그의 자식 태그로 위에서 생성한 li element를 넣는다.
+        const ul_tag = document.querySelector('ul')
+        ul_tag.appendChild(li_tag)
+
+        // 삭제 버튼을 생성 후 li 태그의 자식 태그로 넣는다.
+        const delete_btn = document.createElement('button')
+        delete_btn.innerHTML = 'delete'
+        delete_btn.classList.add('btn')
+        li_tag.appendChild(delete_btn)
+        // 삭제 버튼을 클릭하면 해당 li element를 삭제한다
+        delete_btn.addEventListener('click', function() {
+            const target = this.closest('li')
+            target.remove()   
+        })
+        // li element를 클릭하면 취소선이 토글된다.
+        li_tag.addEventListener('click', function() {
+            this.classList.toggle('done')
+        })
+    } else {
+        alert('할일을 입력하세욧!')
+    }
+  }
+    
+  
+  form.addEventListener('submit', addTodo)
+</script>
+</body>
+</html>

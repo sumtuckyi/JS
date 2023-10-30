@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button>냥냥펀치</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const URL = 'https://api.thedogapi.com/v1/images/search/'
+    const btn = document.querySelector('button')
+    
+
+    const get_cats = function () {
+      axios({
+      method: 'get',
+      url: URL
+      }) // promise object를 반환 -> 콜백함수의 인자로 전달됨
+      .then((response) => {
+        // 응답받은 결과에서 URL을 찾고, IMG태그를 만들고, IMG의 속성을 채우고, BODY에 이미지 태그를 추가
+        console.log(response)
+        const img_url = response.data[0].url
+        return img_url // 반드시 어떤 값을 return해야함 
+      }) // 이전 요청이 성공했을 때 실행하는 콜백함수 : 비동기 처리가 필요한 작업
+      .then((response) => { // response는 img_url(promise object)
+        const img_tag = document.createElement('img')
+        img_tag.setAttribute('src', response)
+        document.body.appendChild(img_tag)
+      })
+      .catch((error) => {
+        console.log(error)
+      }) // 이전 요청이 실패했을 때 실행하는 콜백함수 
+    }
+    
+    btn.addEventListener('click', get_cats)
+
+  </script>
+</body>
+
+</html>

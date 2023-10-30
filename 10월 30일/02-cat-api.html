@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button class="btn">button</button>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const btn = document.querySelector('.btn')
+    const URL = 'https://api.thecatapi.com/v1/images/search'
+
+    const response = axios({
+      method: 'get',
+      url: URL
+    }) // promise object를 반환 -> 콜백함수의 인자로 전달됨
+      .then((response) => {
+        console.log(response.data[0].url)
+      }) // 이전 요청이 성공했을 때 실행하는 콜백함수 : 비동기 처리가 필요한 작업
+      .catch((error) => {
+        console.log(error)
+      }) // 이전 요청이 실패했을 때 실행하는 콜백함수 
+      console.log('멍멍')
+    
+  </script>
+</body>
+
+</html>

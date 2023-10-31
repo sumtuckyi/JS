@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    img {
+      height: 500px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CAT API</h1>
+  <img draggable="false" src="./noResult.png" alt="dog">
+  <h2>아직 선택된 사진이 없습니다!</h2>
+  <br>
+  <button>Get cat</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+        const btn = document.querySelector('button')
+        const h2_tag = document.querySelector('h2')
+        const image_tag = document.querySelector('img')
+
+        URL = 'https://api.thecatapi.com/v1/images/search'
+
+        async function get_cats() {
+            const response = await fetch(URL)
+            const img_url =  await response.json()
+            const src_url = await img_url[0].url
+            image_tag.setAttribute('src', src_url) 
+            h2_tag.textContent = ""
+        }
+
+        btn.addEventListener('click', get_cats)
+  </script>
+</body>
+</html>

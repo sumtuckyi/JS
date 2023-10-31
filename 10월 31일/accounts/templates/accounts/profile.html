@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1>{{ person.username }}님의 프로필</h1>
+
+  <div>
+    <div>
+      팔로잉 : <span id="followings-count">{{ person.followings.all|length }}</span> / 팔로워 : <span id="followers-count">{{ person.followers.all|length }}</span>
+    </div>
+    {% if request.user != person and request.user.is_authenticated %}
+      <div>
+        <form id="follow-form" data-user-id="{{ person.pk }}">
+          {% csrf_token %}
+          {% if request.user in person.followers.all %}
+            <input type="submit" value="Unfollow">
+          {% else %}
+            <input type="submit" value="Follow">
+          {% endif %}
+        </form>
+      </div>
+    {% endif %}
+  </div>
+
+  <hr>
+
+  <h2>작성한 게시글</h2>
+  {% for article in person.article_set.all %}
+    <p>{{ article.title }}</p>
+  {% endfor %}
+
+  <hr>
+
+  <h2>작성한 댓글</h2>
+  {% for comment in person.comment_set.all %}
+    <p>{{ comment.content }}</p>
+  {% endfor %}
+
+  <hr>
+
+  <h2>좋아요를 누른 게시글</h2>
+  {% for article in person.like_articles.all %}
+    <p>{{ article.title }}</p>
+  {% endfor %}
+
+  <hr>
+
+  <a href="{% url "articles:index" %}">[back]</a>
+  
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const form_tag = document.querySelector('#follow-form')
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+    form_tag.addEventListener('submit', function (event) {
+      event.preventDefault() // 새로고침 방지
+      // html태그의 정보를 자바스크립트에서 접근하여 사용 - html tag의 'data-'속성 활용
+      const user_id = form_tag.dataset.userId
+      //console.log(user_id)
+      // 비동기적으로 팔로우/언팔로우를 요청
+      // form태그 대신 해당 url로 요청을 보낸다.
+      axios({
+        url: `/accounts/${user_id}/follow/`,
+        method: 'post',
+        headers: {'X-CSRFToken': csrftoken}
+      })
+        .then((response) => {
+          //console.log(response.data) // views.py의 JsonResponse(context)
+          const is_followed = response.data.is_followed
+          const follow_btn = document.querySelector('#follow-form > input[type=submit]:nth-child(2)')
+          const followingsCntTag = document.querySelector('#followings-count')
+          const followersCntTag = document.querySelector('#followers-count')
+
+          // 팔로우 버튼 토글 기능 구현
+          if (is_followed == true) {
+            follow_btn.value = 'Unfollow'
+          } else {
+            follow_btn.value = 'Follow'
+          }
+          //console.log(followersCntTag)
+          //followings_count_tag.textContent = response.data.followings_count
+          // 팔로우버튼을 누르면 팔로워가 증가하도록 구현
+          followersCntTag.textContent = response.data.followers_count
+
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    })
+  </script>
+
+</body>
+</html>
